@@ -15,7 +15,7 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
+<!--[![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
@@ -31,17 +31,17 @@
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Best-README-Template</h3>
+  <h3 align="center">Geonode Core Setup on Ubuntu 20.04</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
+    Some pointers when installing Geonode Core.
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
+    <a href="https://docs.geonode.org/en/master/install/advanced/core/index.html"><strong>Explore the Geonode Setup Docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+    <!--<a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
+   <!-- <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
     ·
     <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
   </p>
@@ -66,7 +66,7 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
+    <!--<li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -80,20 +80,17 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[<img src="images/geonode.jpg" alt="Logo" width="720" height="360">](https://geonode.org/)
 
-There are many great README templates available on GitHub, however, I didn't find one that really suit my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+Instructions for setting up a Geonode Core instance manually on a fresh install of Ubuntu 20.04.
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should element DRY principles to the rest of your life :smile:
+To begin:
+* Visit the Geonode Core setup page and go through the process. This documentation will touch on some areas that are important to note.  <a href="https://docs.geonode.org/en/master/install/advanced/core/index.html"><strong>Geonode Setup Docs »</strong></a>
+* This is a whole process and will maybe need some experience with bash, Postgresql, Geoserver, and maybe Python. :smile:
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have have contributed to expanding this template!
 
-A list of commonly used resources that I find helpful are listed in the acknowledgements.
-
-### Built With
+Geonode is an Open Source Geospatial Content Management System that fully conforms to the OGC standards. It is built on an underlying django framework. For my particular use case, it is used to store, visualize, distribute, and analyze geospatial data from a field data collection program. Pretty useful.
+<!--### Built With
 
 This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 * [Bootstrap](https://getbootstrap.com)
@@ -105,37 +102,40 @@ This section should list any major frameworks that you built your project using.
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
+The Geonode setup docs touch on most of the important points. 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+On a fresh Ubuntu setup, start with the following:
+  * ```sudo apt-get update```
+  * ```sudo update software-propertiess-common```
+  * ```sudo apt-get install libmemcached```
+  * ```sudo apt-get install -y zlib1g-dev```
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```JS
-   const API_KEY = 'ENTER YOUR API';
-   ```
+After installing the prerequisites, visit the Geonode Core docs and follow the instructions.  <a href="https://docs.geonode.org/en/master/install/advanced/core/index.html"><strong>Geonode Setup Docs »</strong></a>
+  
+You might encounter a uwsgi restart error on the serving Geoserver via Nginx section. To go around this, edit the uwsgi geonode.ini file. ```sudo vim /etc/uwsgi/apps-available/geonode.ini```
+  
+Search using ```/pidfile``` and hit Enter.
+To edit using the Vim editor, hit `i` for insert. 
+Add a `#` before the `pidfile = /tmp/geonode.pid` line and save. To save, click escape and then `:wq`.
+Then deete the .pid (proces ID) file `/tmp/geonode.pid`
+After editing the .pid file, repeat this step:
+  
+```# Enable the GeoNode UWSGI config
+        sudo ln -s /etc/uwsgi/apps-available/geonode.ini /etc/uwsgi/apps-enabled/geonode.ini
 
+        # Restart UWSGI Service
+          sudo pkill -9 -f uwsgi
+          sudo service uwsgi restart
+  ```
 
+  On the installation of RabbitMQ, use the key from https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xf77f1eda57ebb1cc instead of the one on the Geonode Core docs.
 
-<!-- USAGE EXAMPLES -->
-## Usage
+  
+  <!-- USAGE EXAMPLES -->
+<!--## Usage
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
@@ -144,14 +144,14 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 
 <!-- ROADMAP -->
-## Roadmap
+<!--## Roadmap
 
 See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
 
 
 
 <!-- CONTRIBUTING -->
-## Contributing
+<!--## Contributing
 
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
@@ -164,14 +164,14 @@ Contributions are what make the open source community such an amazing place to b
 
 
 <!-- LICENSE -->
-## License
+<!--## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
 
 
 <!-- CONTACT -->
-## Contact
+<!--## Contact
 
 Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
 
@@ -180,7 +180,7 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 
 
 <!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
+<!--## Acknowledgements
 * [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
 * [Img Shields](https://shields.io)
 * [Choose an Open Source License](https://choosealicense.com)
@@ -199,7 +199,7 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
+<!--[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
 [contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
 [forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
